@@ -7,7 +7,6 @@ const Sort = ({ ...props }) => {
 		{ title: 'цене', id: 1, sortParams: 'price' },
 		{ title: 'алфавиту', id: 2, sortParams: 'title' },
 	]);
-	const [activeElem, setActiveElem] = useState(0);
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef(false);
 
@@ -48,7 +47,7 @@ const Sort = ({ ...props }) => {
 				<b>Сортировка по:</b>
 				<span>
 					{sortElem.map((elem) => {
-						return elem.id === activeElem ? elem.title : '';
+						return elem.sortParams === props.value ? elem.title : '';
 					})}
 				</span>
 			</div>
@@ -64,11 +63,10 @@ const Sort = ({ ...props }) => {
 							<li
 								onClick={() => {
 									setOpen(!open);
-									setActiveElem(elem.id);
 									props.setTypeSorted(elem.sortParams);
 								}}
 								className={`
-								${activeElem === elem.id ? styles.active : ''}
+								${props.value === elem.sortParams ? styles.active : ''}
 								`}
 								key={elem.id}
 							>

@@ -65,8 +65,11 @@ const Home = ({ ...props }) => {
 		<div className="content">
 			<div className="container">
 				<div className="content__top">
-					<Cotegories changeCategoriesSorted={(id) => setCategoriesSorted(id)} />
-					<Sort setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
+					<Cotegories
+						value={categoriesSorted}
+						changeCategoriesSorted={(id) => setCategoriesSorted(id)}
+					/>
+					<Sort value={typeSorted} setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">
