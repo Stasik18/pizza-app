@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import styles from './_pizza-block.module.scss';
 
 const PizzaCard = ({ id, imageUrl, title, types, sizes, price, category, rating }) => {

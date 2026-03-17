@@ -33,7 +33,8 @@ body {
 	&__items {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
+		justify-content: space-around;
+		gap: 45px;
 
 		@media (max-width: 1125px) {
 			justify-content: space-around;

@@ -1,7 +1,6 @@
 import styles from './_categories.module.scss';
 import { useState } from 'react';
 const Categories = ({ ...props }) => {
-	console.log(props);
 	const [categories, setCategories] = useState([
 		{ name: 'Все', id: 0 },
 		{ name: 'Мясные', id: 1 },
