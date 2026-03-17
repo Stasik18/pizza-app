@@ -1,0 +1,209 @@
+@use '../../../app/styles/variables';
+
+.container--cart {
+	width: 820px;
+	margin: 0 auto;
+	padding: 80px 0px;
+}
+
+.cart {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		&-clear {
+			display: flex;
+			align-items: center;
+			color: rgb(175, 170, 170);
+			transition: color 0.3s ease 0.1s;
+
+			button {
+				border: none;
+				background-color: transparent;
+				font-size: 16px;
+				color: inherit;
+			}
+
+			svg {
+				fill: currenColor;
+				width: 20px;
+				height: 20px;
+				margin-right: 5px;
+			}
+
+			&:hover {
+				color: rgb(62, 62, 62);
+			}
+		}
+	}
+
+	&__item {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		&-img {
+			width: 10%;
+		}
+		&-title {
+			h3 {
+				font-size: 22px;
+				font-weight: bold;
+				line-height: 27px;
+				letter-spacing: 0.01em;
+			}
+
+			span {
+				font-size: 18px;
+				color: #8d8d8d;
+			}
+		}
+		&-counter {
+			width: 13%;
+			display: flex;
+			justify-content: space-between;
+
+			button {
+				color: variables.$orange;
+				background: transparent;
+				border: 2px solid variables.$orange;
+				width: 32px;
+				height: 32px;
+				font-size: 20px;
+				border-radius: 50%;
+				cursor: pointer;
+				transition: background 0.2s ease;
+
+				&:hover {
+					background: variables.$orange;
+					color: white;
+				}
+			}
+
+			span {
+				font-size: 22px;
+				font-weight: bold;
+			}
+		}
+		&-price {
+			width: 14%;
+			font-size: 22px;
+			font-weight: bold;
+		}
+		&-delete {
+			color: #ddd;
+			background: transparent;
+			border: 2px solid #ddd;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition:
+				background-color 0.2s ease,
+				border-color 0.2s ease;
+
+			&:hover {
+				border-color: #2a2a2a;
+				background-color: #2a2a2a;
+			}
+
+			svg {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+	&__total {
+		display: flex;
+		font-size: 22px;
+		justify-content: space-between;
+		margin: 50px 0;
+
+		&-count {
+			display: flex;
+			gap: 10px;
+
+			p {
+			}
+
+			span {
+				color: #232323;
+				font-weight: bold;
+			}
+		}
+
+		&-price {
+			display: flex;
+			gap: 10px;
+
+			p {
+			}
+
+			span {
+				color: variables.$orange;
+				font-weight: bold;
+			}
+		}
+	}
+	&__footer {
+		display: flex;
+		font-size: 22px;
+		justify-content: space-between;
+		flex-wrap: nowrap;
+
+		a {
+			display: flex;
+
+			align-items: center;
+			border: 1px solid #ddd;
+			border-radius: 30px;
+			cursor: pointer;
+			color: #ddd;
+			padding: 10px 20px;
+			width: 210px;
+			gap: 10px;
+			transition:
+				background-color 0.2s ease,
+				border-color 0.2s ease;
+
+			span {
+				font-size: 17px;
+				color: inherit;
+			}
+
+			svg {
+				width: 22px;
+				height: 22px;
+			}
+
+			&:hover {
+				border-color: #2a2a2a;
+				background-color: #2a2a2a;
+			}
+		}
+
+		button {
+			color: variables.$orange;
+			background: transparent;
+			border: 2px solid variables.$orange;
+			width: 210px;
+			border-radius: 30px;
+			padding: 10px 20px;
+			font-size: 20px;
+			cursor: pointer;
+			transition:
+				background-color 0.2s ease,
+				border-color 0.2s ease;
+
+			&:hover {
+				background: variables.$orange;
+				color: white;
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+.root {
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	padding: 100px;
+	align-items: center;
+}
+
+.smile {
+	font-size: 58px;
+}
+
+.description {
+	font-size: 28px;
+	color: rgb(150, 150, 150);
+}
