@@ -2,7 +2,7 @@ import { use, useState, useRef, useEffect } from 'react';
 
 import '../../../app/styles/app.scss';
 import PizzaCard from '../../../entities/pizza/PizzaCard';
-import Cotegories from '../../../features/filters/ui/Categories';
+import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/Sort';
 
 const Home = ({ ...props }) => {
@@ -12,6 +12,7 @@ const Home = ({ ...props }) => {
 	const [showSkeleton, setShowSkeleton] = useState(false);
 
 	const [typeSorted, setTypeSorted] = useState('rating');
+
 	const [categoriesSorted, setCategoriesSorted] = useState(0);
 	const [sortOrder, setSortOrder] = useState('desc');
 	const [searchPizza, setSearchPizza] = useState('');
@@ -65,11 +66,8 @@ const Home = ({ ...props }) => {
 		<div className="content">
 			<div className="container">
 				<div className="content__top">
-					<Cotegories
-						value={categoriesSorted}
-						changeCategoriesSorted={(id) => setCategoriesSorted(id)}
-					/>
-					<Sort value={typeSorted} setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
+					<Cotegories changeCategoriesSorted={(id) => setCategoriesSorted(id)} />
+					<Sort setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">

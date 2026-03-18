@@ -1,7 +1,7 @@
 import '../../app/styles/app.scss';
 import SkeletonRLS from '../../entities/pizza/SkeletonRLS';
 import SkeletonNeSam from '../../entities/pizza/SkeletonNeSam';
-import Categories from '../../features/filters/ui/Categories';
+import Categories from '../../features/filters/ui/categories/Categories';
 import Sort from '../../features/filters/ui/Sort';
 
 const LoadingFetch = ({ ...props }) => {
