@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import styles from './_header.module.scss';
 import logoSvg from '../../../shared/assets/img/pizza-logo.svg';
-const Header = () => {
+import Search from '../../../features/filters/ui/search';
+const Header = ({ searchValue, setSearchValue }) => {
 	return (
 		<div className={styles.header}>
 			<div className={styles['container']}>
@@ -14,6 +15,7 @@ const Header = () => {
 						</div>
 					</div>
 				</Link>
+				<Search />
 				<div className={styles['header__cart']}>
 					<Link to="/cart" className={`${styles['button']} ${styles['button--cart']}`}>
 						<span>520 ₽</span>

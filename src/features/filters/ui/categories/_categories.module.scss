@@ -1,5 +1,5 @@
-@use '../../../app/styles/variables';
-@use '../../../app/styles/normalize';
+@use '../../../../app/styles/variables';
+@use '../../../../app/styles/normalize';
 @use 'sass:color';
 .categories {
 	@media (max-width: 1010px) {

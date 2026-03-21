@@ -8,8 +8,11 @@ import Home from '../pages//Home/ui/Home.jsx';
 import Cart from '../pages/Cart/ui/Cart.jsx';
 import NotFound from '../pages/NotFound/ui/NotFound.jsx';
 
+export const SearchValue = React.createContext();
+
 function App() {
 	const [status, setStatus] = React.useState('success');
+	const [searchValue, setSearchValue] = React.useState('');
 
 	const renderWay = {
 		loading: <LoadingFetch />,
@@ -59,14 +62,16 @@ function App() {
 	// }
 
 	return (
-		<div className="wrapper">
-			<Header />
-			<Routes>
-				<Route path="/cart" element={<Cart />} />
-				<Route path="/" element={renderWay[status]} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</div>
+		<SearchValue.Provider value={{ searchValue, setSearchValue }}>
+			<div className="wrapper">
+				<Header />
+				<Routes>
+					<Route path="/cart" element={<Cart />} />
+					<Route path="/" element={renderWay[status]} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</div>
+		</SearchValue.Provider>
 	);
 }
 

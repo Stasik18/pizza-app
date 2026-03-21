@@ -1,0 +1,28 @@
+@use '../../../../app/styles/variables' as variables;
+
+.pagination {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	align-items: center;
+	&__arrow {
+		width: 43px;
+		height: 43px;
+		cursor: pointer;
+		transition: 0.2s ease-in-out;
+		fill: variables.$orange;
+	}
+	&__arrow--previous {
+		transform: rotate(180deg);
+	}
+
+	&__arrow--next {
+	}
+
+	&__arrow--disable {
+		width: 33px;
+		height: 33px;
+		opacity: 0.2;
+		cursor: not-allowed;
+	}
+}

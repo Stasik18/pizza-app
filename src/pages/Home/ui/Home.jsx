@@ -1,10 +1,12 @@
-import { use, useState, useRef, useEffect } from 'react';
+import { use, useState, useRef, useEffect, useContext } from 'react';
 
 import '../../../app/styles/app.scss';
 import PizzaCard from '../../../entities/pizza/PizzaCard';
 import Cotegories from '../../../features/filters/ui/categories/Categories';
-import Sort from '../../../features/filters/ui/Sort';
+import Sort from '../../../features/filters/ui/sort/Sort';
+import Pagination from '../../../features/filters/ui/pagination/Pagination';
 
+import { SearchValue } from '../../../app/App';
 const Home = ({ ...props }) => {
 	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -12,10 +14,12 @@ const Home = ({ ...props }) => {
 	const [showSkeleton, setShowSkeleton] = useState(false);
 
 	const [typeSorted, setTypeSorted] = useState('rating');
-
 	const [categoriesSorted, setCategoriesSorted] = useState(0);
 	const [sortOrder, setSortOrder] = useState('desc');
-	const [searchPizza, setSearchPizza] = useState('');
+
+	const { searchValue, setSearchValue } = useContext(SearchValue);
+	const search = searchValue ? `${searchValue}` : '';
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		setLoading(true);
@@ -24,6 +28,9 @@ const Home = ({ ...props }) => {
 				`https://6989c620c04d974bc6a05c40.mockapi.io/items?&sortBy=rating&order=asc`,
 			);
 			url.searchParams.set('sortBy', typeSorted);
+			url.searchParams.set('search', search);
+			url.searchParams.set('page', page);
+			url.searchParams.set('limit', 4);
 			categoriesSorted === 0 ? url : url.searchParams.append('category', categoriesSorted);
 			try {
 				const response = await fetch(url);
@@ -38,7 +45,7 @@ const Home = ({ ...props }) => {
 		};
 
 		loadPizza();
-	}, [typeSorted, sortOrder, categoriesSorted]);
+	}, [typeSorted, sortOrder, categoriesSorted, searchValue, page]);
 
 	useEffect(() => {
 		let show;
@@ -66,8 +73,11 @@ const Home = ({ ...props }) => {
 		<div className="content">
 			<div className="container">
 				<div className="content__top">
-					<Cotegories changeCategoriesSorted={(id) => setCategoriesSorted(id)} />
-					<Sort setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
+					<Cotegories
+						value={categoriesSorted}
+						changeCategoriesSorted={(id) => setCategoriesSorted(id)}
+					/>
+					<Sort value={typeSorted} setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">
@@ -75,6 +85,8 @@ const Home = ({ ...props }) => {
 						return <PizzaCard {...card} key={card.id} />;
 					})}
 				</div>
+
+				<Pagination totalPage={3} page={page} setPage={setPage} />
 			</div>
 		</div>
 	);

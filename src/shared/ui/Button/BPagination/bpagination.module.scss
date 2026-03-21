@@ -1,0 +1,16 @@
+@use '../../../../app/styles/variables' as variables;
+
+.pagination__button {
+	padding: 10px 17px;
+	border-radius: 30px;
+	border-color: variables.$orange;
+	color: variables.$orange;
+	background-color: #fff;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.pagination__button--active {
+	background-color: variables.$orange;
+	color: #fff;
+}
