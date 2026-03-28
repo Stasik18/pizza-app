@@ -1,5 +1,5 @@
 import React from 'react';
-import BPagination from '../../../../shared/ui/Button/BPagination/BPagination';
+import BPagination from '../../shared/ui/Button/BPagination/BPagination';
 import styles from './pagination.module.scss';
 const Pagination = ({ totalPage, page, setPage }) => {
 	const prevPage = () => {

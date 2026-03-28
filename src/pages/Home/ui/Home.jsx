@@ -4,7 +4,7 @@ import '../../../app/styles/app.scss';
 import PizzaCard from '../../../entities/pizza/PizzaCard';
 import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
-import Pagination from '../../../features/filters/ui/pagination/Pagination';
+import Pagination from '../../../features/pagination/Pagination';
 
 import { SearchValue } from '../../../app/App';
 const Home = ({ ...props }) => {
