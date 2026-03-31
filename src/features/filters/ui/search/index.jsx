@@ -1,10 +1,26 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { SearchValue } from '../../../../app/App';
+import debounce from 'lodash.debounce';
+
 import styles from './search.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearch } from '../../../../app/redux/slices/searchSlice';
 
 const Search = () => {
-	const { searchValue, setSearchValue } = useContext(SearchValue);
+	const searchText = useSelector((state) => state.searchSlice.searchText);
+	const [localSearchText, setLocalSearchText] = useState('');
+	const dispatch = useDispatch();
+	const inputRef = useRef();
 
+	const testDebounce = useCallback(
+		debounce((e) => {
+			console.log(e);
+			dispatch(setSearch(e));
+		}, 1000),
+		[],
+	);
+
+	const inputValueOnChange = (e) => {};
 	return (
 		<div className={styles.root}>
 			<svg
@@ -21,17 +37,23 @@ const Search = () => {
 				/>
 			</svg>
 			<input
-				value={searchValue}
+				ref={inputRef}
+				value={localSearchText}
 				onChange={(e) => {
-					setSearchValue(e.target.value);
+					setLocalSearchText(e.target.value);
+					testDebounce(e.target.value);
 				}}
 				className={styles.input}
 				placeholder="Поиск пиццы"
 			/>
 
-			{searchValue && (
+			{searchText && (
 				<svg
-					onClick={() => setSearchValue('')}
+					onClick={() => {
+						inputRef.current.focus();
+						setLocalSearchText('');
+						dispatch(setSearch(''));
+					}}
 					className={styles.clear}
 					fill="#000000"
 					width="800px"

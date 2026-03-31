@@ -7,7 +7,7 @@ import styles from './_sort.module.scss';
 const Sort = () => {
 	const typeFilter = useSelector((state) => state.filterSlice.typeFilter);
 	const dispatch = useDispatch();
-	console.log(typeFilter);
+
 	const [sortElem, setSortElem] = useState([
 		{ title: 'популярности', id: 0, sortParams: 'rating' },
 		{ title: 'цене', id: 1, sortParams: 'price' },

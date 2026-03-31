@@ -13,15 +13,15 @@ import axios from 'axios';
 const Home = ({ ...props }) => {
 	const currentCategory = useSelector((state) => state.filterSlice.categoryId);
 	const typeFilter = useSelector((state) => state.filterSlice.typeFilter.type);
-
+	const searchText = useSelector((state) => state.searchSlice.searchText);
+	console.log(searchText);
 	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [showSkeleton, setShowSkeleton] = useState(false);
 	const [sortOrder, setSortOrder] = useState('desc');
 
-	const { searchValue, setSearchValue } = useContext(SearchValue);
-	const search = searchValue ? `${searchValue}` : '';
+	const search = searchText ? `${searchText}` : '';
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
@@ -47,7 +47,7 @@ const Home = ({ ...props }) => {
 		};
 
 		loadPizza();
-	}, [typeFilter, sortOrder, currentCategory, searchValue, page]);
+	}, [typeFilter, sortOrder, currentCategory, searchText, page]);
 
 	useEffect(() => {
 		let show;

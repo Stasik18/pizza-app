@@ -12,7 +12,6 @@ export const SearchValue = React.createContext();
 
 function App() {
 	const [status, setStatus] = React.useState('success');
-	const [searchValue, setSearchValue] = React.useState('');
 
 	const renderWay = {
 		loading: <LoadingFetch />,
@@ -62,7 +61,7 @@ function App() {
 	// }
 
 	return (
-		<SearchValue.Provider value={{ searchValue, setSearchValue }}>
+		<SearchValue.Provider>
 			<div className="wrapper">
 				<Header />
 				<Routes>
