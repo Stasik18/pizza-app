@@ -1,7 +1,13 @@
-import styles from './_sort.module.scss';
 import { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
 
-const Sort = ({ ...props }) => {
+import styles from './_sort.module.scss';
+
+const Sort = () => {
+	const typeFilter = useSelector((state) => state.filterSlice.typeFilter);
+	const dispatch = useDispatch();
+	console.log(typeFilter);
 	const [sortElem, setSortElem] = useState([
 		{ title: 'популярности', id: 0, sortParams: 'rating' },
 		{ title: 'цене', id: 1, sortParams: 'price' },
@@ -47,7 +53,7 @@ const Sort = ({ ...props }) => {
 				<b>Сортировка по:</b>
 				<span>
 					{sortElem.map((elem) => {
-						return elem.sortParams === props.value ? elem.title : '';
+						return elem.sortParams === typeFilter.type ? elem.title : '';
 					})}
 				</span>
 			</div>
@@ -63,10 +69,10 @@ const Sort = ({ ...props }) => {
 							<li
 								onClick={() => {
 									setOpen(!open);
-									props.setTypeSorted(elem.sortParams);
+									dispatch(setTypeFilter({ name: elem.title, type: elem.sortParams }));
 								}}
 								className={`
-								${props.value === elem.sortParams ? styles.active : ''}
+								${typeFilter.type === elem.sortParams ? styles.active : ''}
 								`}
 								key={elem.id}
 							>

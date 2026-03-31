@@ -1,4 +1,5 @@
 import { use, useState, useRef, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 import '../../../app/styles/app.scss';
 import PizzaCard from '../../../entities/pizza/PizzaCard';
@@ -7,14 +8,16 @@ import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
 
 import { SearchValue } from '../../../app/App';
+import axios from 'axios';
+
 const Home = ({ ...props }) => {
+	const currentCategory = useSelector((state) => state.filterSlice.categoryId);
+	const typeFilter = useSelector((state) => state.filterSlice.typeFilter.type);
+
 	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [showSkeleton, setShowSkeleton] = useState(false);
-
-	const [typeSorted, setTypeSorted] = useState('rating');
-	const [categoriesSorted, setCategoriesSorted] = useState(0);
 	const [sortOrder, setSortOrder] = useState('desc');
 
 	const { searchValue, setSearchValue } = useContext(SearchValue);
@@ -27,15 +30,14 @@ const Home = ({ ...props }) => {
 			const url = new URL(
 				`https://6989c620c04d974bc6a05c40.mockapi.io/items?&sortBy=rating&order=asc`,
 			);
-			url.searchParams.set('sortBy', typeSorted);
+			url.searchParams.set('sortBy', typeFilter);
 			url.searchParams.set('search', search);
 			url.searchParams.set('page', page);
-			url.searchParams.set('limit', 4);
-			categoriesSorted === 0 ? url : url.searchParams.append('category', categoriesSorted);
+			url.searchParams.set('limit', 10);
+			currentCategory === 0 ? url : url.searchParams.append('category', currentCategory);
 			try {
-				const response = await fetch(url);
-				if (!response.ok) throw new Error('Ебобо');
-				const data = await response.json();
+				const response = await axios.get(url);
+				const data = await response.data;
 				setPizzas(data);
 			} catch (e) {
 				setError(e);
@@ -45,7 +47,7 @@ const Home = ({ ...props }) => {
 		};
 
 		loadPizza();
-	}, [typeSorted, sortOrder, categoriesSorted, searchValue, page]);
+	}, [typeFilter, sortOrder, currentCategory, searchValue, page]);
 
 	useEffect(() => {
 		let show;
@@ -73,11 +75,8 @@ const Home = ({ ...props }) => {
 		<div className="content">
 			<div className="container">
 				<div className="content__top">
-					<Cotegories
-						value={categoriesSorted}
-						changeCategoriesSorted={(id) => setCategoriesSorted(id)}
-					/>
-					<Sort value={typeSorted} setTypeSorted={(sortParams) => setTypeSorted(sortParams)} />
+					<Cotegories />
+					<Sort />
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">
@@ -86,7 +85,7 @@ const Home = ({ ...props }) => {
 					})}
 				</div>
 
-				<Pagination totalPage={3} page={page} setPage={setPage} />
+				<Pagination totalPage={1} page={page} setPage={setPage} />
 			</div>
 		</div>
 	);

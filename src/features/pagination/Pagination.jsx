@@ -61,7 +61,7 @@ const Pagination = ({ totalPage, page, setPage }) => {
 					viewBox="-3 0 32 32"
 					version="1.1"
 					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
+					xmlnsXlink="http://www.w3.org/1999/xlink"
 				>
 					<g id="icomoon-ignore"></g>
 					<path d="M13.11 29.113c7.243 0 13.113-5.871 13.113-13.113s-5.87-13.113-13.113-13.113c-7.242 0-13.113 5.871-13.113 13.113s5.871 13.113 13.113 13.113zM13.11 3.936c6.652 0 12.064 5.412 12.064 12.064s-5.412 12.064-12.064 12.064c-6.653 0-12.064-5.412-12.064-12.064s5.411-12.064 12.064-12.064z"></path>
@@ -87,7 +87,7 @@ const Pagination = ({ totalPage, page, setPage }) => {
 					viewBox="-3 0 32 32"
 					version="1.1"
 					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
+					xmlnsXlink="http://www.w3.org/1999/xlink"
 				>
 					<g id="icomoon-ignore"></g>
 					<path d="M13.11 29.113c7.243 0 13.113-5.871 13.113-13.113s-5.87-13.113-13.113-13.113c-7.242 0-13.113 5.871-13.113 13.113s5.871 13.113 13.113 13.113zM13.11 3.936c6.652 0 12.064 5.412 12.064 12.064s-5.412 12.064-12.064 12.064c-6.653 0-12.064-5.412-12.064-12.064s5.411-12.064 12.064-12.064z"></path>
