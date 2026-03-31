@@ -1,16 +1,21 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setCurrentPage } from '../../app/redux/slices/filterSlice';
 import BPagination from '../../shared/ui/Button/BPagination/BPagination';
 import styles from './pagination.module.scss';
-const Pagination = ({ totalPage, page, setPage }) => {
+const Pagination = ({ totalPage }) => {
+	const currentPage = useSelector((state) => state.filterSlice.currentPage);
+	const dispatch = useDispatch();
 	const prevPage = () => {
-		if (page >= 2) {
-			setPage(page - 1);
+		if (currentPage >= 2) {
+			dispatch(setCurrentPage(currentPage - 1));
 		}
 	};
 
 	const prevNext = () => {
-		if (page < totalPage) {
-			setPage(page + 1);
+		if (currentPage < totalPage) {
+			dispatch(setCurrentPage(currentPage + 1));
 		}
 	};
 
@@ -55,7 +60,7 @@ const Pagination = ({ totalPage, page, setPage }) => {
 			{totalPage > 1 && (
 				<svg
 					onClick={() => prevPage()}
-					className={`${styles.pagination__arrow} ${styles['pagination__arrow--previous']} ${page === 1 ? styles['pagination__arrow--disable'] : ''}`}
+					className={`${styles.pagination__arrow} ${styles['pagination__arrow--previous']} ${currentPage === 1 ? styles['pagination__arrow--disable'] : ''}`}
 					width="800px"
 					height="800px"
 					viewBox="-3 0 32 32"
@@ -68,20 +73,21 @@ const Pagination = ({ totalPage, page, setPage }) => {
 					<path d="M13.906 21.637l0.742 0.742 6.378-6.379-6.378-6.379-0.742 0.742 5.112 5.112h-12.727v1.049h12.727z"></path>
 				</svg>
 			)}
-			{newFunc(page, totalPage).map((elem, i) => {
+			{newFunc(currentPage, totalPage).map((elem, i) => {
+				console.log(typeof elem);
 				return typeof elem === 'string' ? (
 					<span className={styles.dots} key={i}>
 						{elem}
 					</span>
 				) : (
-					<BPagination key={i} page={page} setPage={setPage} title={elem} />
+					<BPagination key={i} title={elem} />
 				);
 			})}
 
 			{totalPage > 1 && (
 				<svg
 					onClick={() => prevNext()}
-					className={`${styles.pagination__arrow}  ${styles['pagination__arrow--next']} ${page === totalPage ? styles['pagination__arrow--disable'] : ''} `}
+					className={`${styles.pagination__arrow}  ${styles['pagination__arrow--next']} ${currentPage === totalPage ? styles['pagination__arrow--disable'] : ''} `}
 					width="800px"
 					height="800px"
 					viewBox="-3 0 32 32"

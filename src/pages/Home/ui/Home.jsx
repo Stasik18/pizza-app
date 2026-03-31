@@ -7,22 +7,22 @@ import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
 
-import { SearchValue } from '../../../app/App';
 import axios from 'axios';
 
 const Home = ({ ...props }) => {
-	const currentCategory = useSelector((state) => state.filterSlice.categoryId);
-	const typeFilter = useSelector((state) => state.filterSlice.typeFilter.type);
+	const { currentPage, typeFilter, currentCategory } = useSelector((state) => state.filterSlice);
 	const searchText = useSelector((state) => state.searchSlice.searchText);
-	console.log(searchText);
+
 	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [showSkeleton, setShowSkeleton] = useState(false);
+
 	const [sortOrder, setSortOrder] = useState('desc');
 
-	const search = searchText ? `${searchText}` : '';
 	const [page, setPage] = useState(1);
+
+	const search = searchText ? `${searchText}` : ''; // что вообще тут поменяется ебать
 
 	useEffect(() => {
 		setLoading(true);
@@ -32,8 +32,8 @@ const Home = ({ ...props }) => {
 			);
 			url.searchParams.set('sortBy', typeFilter);
 			url.searchParams.set('search', search);
-			url.searchParams.set('page', page);
-			url.searchParams.set('limit', 10);
+			url.searchParams.set('page', currentPage);
+			url.searchParams.set('limit', 4);
 			currentCategory === 0 ? url : url.searchParams.append('category', currentCategory);
 			try {
 				const response = await axios.get(url);
@@ -47,7 +47,7 @@ const Home = ({ ...props }) => {
 		};
 
 		loadPizza();
-	}, [typeFilter, sortOrder, currentCategory, searchText, page]);
+	}, [typeFilter, sortOrder, currentCategory, searchText, currentPage]);
 
 	useEffect(() => {
 		let show;
@@ -85,7 +85,7 @@ const Home = ({ ...props }) => {
 					})}
 				</div>
 
-				<Pagination totalPage={1} page={page} setPage={setPage} />
+				<Pagination totalPage={3} />
 			</div>
 		</div>
 	);
