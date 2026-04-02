@@ -6,7 +6,6 @@ import styles from './bpagination.module.scss';
 const BPagination = ({ title }) => {
 	const currentPage = useSelector((state) => state.filterSlice.currentPage);
 	const dispatch = useDispatch();
-	console.log(currentPage);
 
 	return (
 		<>

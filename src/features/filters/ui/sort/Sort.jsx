@@ -4,15 +4,17 @@ import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
 
 import styles from './_sort.module.scss';
 
+export const sortCategory = [
+	{ title: 'популярности', id: 0, type: 'rating' },
+	{ title: 'цене', id: 1, type: 'price' },
+	{ title: 'алфавиту', id: 2, type: 'title' },
+];
+
 const Sort = () => {
 	const typeFilter = useSelector((state) => state.filterSlice.typeFilter);
+
 	const dispatch = useDispatch();
 
-	const [sortElem, setSortElem] = useState([
-		{ title: 'популярности', id: 0, sortParams: 'rating' },
-		{ title: 'цене', id: 1, sortParams: 'price' },
-		{ title: 'алфавиту', id: 2, sortParams: 'title' },
-	]);
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef(false);
 
@@ -52,8 +54,8 @@ const Sort = () => {
 				</svg>
 				<b>Сортировка по:</b>
 				<span>
-					{sortElem.map((elem) => {
-						return elem.sortParams === typeFilter.type ? elem.title : '';
+					{sortCategory.map((elem) => {
+						return elem.type === typeFilter.type ? elem.title : '';
 					})}
 				</span>
 			</div>
@@ -64,15 +66,16 @@ const Sort = () => {
 			`}
 			>
 				<ul>
-					{sortElem.map((elem) => {
+					{sortCategory.map((elem) => {
 						return (
 							<li
 								onClick={() => {
 									setOpen(!open);
-									dispatch(setTypeFilter({ name: elem.title, type: elem.sortParams }));
+									dispatch(setTypeFilter({ type: elem.type, name: elem.title }));
 								}}
+								type
 								className={`
-								${typeFilter.type === elem.sortParams ? styles.active : ''}
+								${typeFilter.type === elem.type ? styles.active : ''}
 								`}
 								key={elem.id}
 							>

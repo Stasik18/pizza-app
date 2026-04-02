@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { sortCategory } from '../../../features/filters/ui/sort/Sort';
 
 const initialState = {
 	currentPage: 1,
 	currentCategory: 0,
 	typeFilter: {
-		name: 'популярности',
 		type: 'rating',
+		name: 'популярности',
 	},
 };
 
@@ -14,19 +15,24 @@ const filterSlice = createSlice({
 	initialState,
 	reducers: {
 		setCategoryId(state, action) {
-			state.currentCategory = action.payload;
+			state.currentCategory = +action.payload;
+		},
+
+		setCurrentPage(state, action) {
+			state.currentPage = +action.payload;
 		},
 		setTypeFilter(state, action) {
-			state.typeFilter.name = action.payload.name;
-			state.typeFilter.type = action.payload.type;
+			state.typeFilter = action.payload;
 		},
-		setCurrentPage(state, action) {
-			state.currentPage = action.payload;
-			console.log(state.currentPage);
+		setQueryParams(state, action) {
+			console.log(action.payload);
+			state.currentCategory = +action.payload.currentCategory;
+			state.currentPage = +action.payload.currentPage;
+			state.typeFilter = action.payload.typeFilter;
 		},
 	},
 });
 
-export const { setCategoryId, setTypeFilter, setCurrentPage } = filterSlice.actions;
+export const { setCategoryId, setTypeFilter, setCurrentPage, setQueryParams } = filterSlice.actions;
 
 export default filterSlice.reducer;

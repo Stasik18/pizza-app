@@ -51,7 +51,7 @@ const Pagination = ({ totalPage }) => {
 				result.push(forJob[i]);
 			}
 		}
-		console.log(result);
+
 		return result;
 	};
 
@@ -74,7 +74,6 @@ const Pagination = ({ totalPage }) => {
 				</svg>
 			)}
 			{newFunc(currentPage, totalPage).map((elem, i) => {
-				console.log(typeof elem);
 				return typeof elem === 'string' ? (
 					<span className={styles.dots} key={i}>
 						{elem}

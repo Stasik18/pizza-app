@@ -5,7 +5,7 @@ import styles from './_categories.module.scss';
 
 const Categories = () => {
 	const dispatch = useDispatch();
-	const filter = useSelector((state) => state.filterSlice.categoryId);
+	const filter = useSelector((state) => state.filterSlice.currentCategory);
 
 	const [categories, setCategories] = useState([
 		{ name: 'Все', id: 0 },

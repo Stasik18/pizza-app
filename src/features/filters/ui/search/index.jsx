@@ -14,7 +14,6 @@ const Search = () => {
 
 	const testDebounce = useCallback(
 		debounce((e) => {
-			console.log(e);
 			dispatch(setSearch(e));
 		}, 1000),
 		[],
