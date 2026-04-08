@@ -17,21 +17,20 @@ import {
 	setCurrentPage,
 	setQueryParams,
 } from '../../../app/redux/slices/filterSlice';
+import LoadingFetch from '../../../shared/api/LoadingFetch';
 
-const Home = ({ ...props }) => {
+const Home = () => {
 	const { currentPage, typeFilter, currentCategory } = useSelector((state) => state.filterSlice);
 	const searchText = useSelector((state) => state.searchSlice.searchText);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	console.log(typeFilter);
-
 	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [showSkeleton, setShowSkeleton] = useState(false);
 	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
 	const [isLoading, setIsLoading] = useState(false);
+
 	const search = searchText ? `${searchText}` : ''; // что вообще тут поменяется ебать
 
 	const isMounting = useRef(false);
@@ -39,11 +38,10 @@ const Home = ({ ...props }) => {
 	useEffect(() => {
 		if (window.location.search) {
 			const params = QueryString.parse(window.location.search.substring(1));
-			console.log(params);
+
 			const typeFilter = sortCategory.find((e) => {
 				return e.type === params.typeFilter;
 			});
-			console.log(typeFilter);
 
 			dispatch(
 				setQueryParams({
@@ -61,7 +59,7 @@ const Home = ({ ...props }) => {
 				currentPage: currentPage,
 				currentCategory: currentCategory,
 			});
-			console.log(queryString);
+
 			navigate(`?${queryString}`);
 		}
 		isMounting.current = true;
@@ -95,28 +93,6 @@ const Home = ({ ...props }) => {
 		}
 	}, [typeFilter.type, sortOrder, currentCategory, searchText, currentPage, isLoading]);
 
-	useEffect(() => {
-		let show;
-
-		if (loading) {
-			show = setTimeout(() => {
-				setShowSkeleton(true);
-			}, 300);
-		} else {
-			setShowSkeleton(false);
-		}
-
-		return () => {
-			clearTimeout(show);
-		};
-	}, [loading]);
-
-	if (showSkeleton) {
-		props.setStatus = 'loading';
-	} else if (error) {
-		props.setStatus = 'error';
-	}
-
 	return (
 		<div className="content">
 			<div className="container">
@@ -126,9 +102,13 @@ const Home = ({ ...props }) => {
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">
-					{pizzas.map((card) => {
-						return <PizzaCard {...card} key={card.id} />;
-					})}
+					{loading ? (
+						<LoadingFetch />
+					) : (
+						pizzas.map((card) => {
+							return <PizzaCard {...card} key={card.id} />;
+						})
+					)}
 				</div>
 
 				<Pagination totalPage={3} />

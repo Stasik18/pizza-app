@@ -1,11 +1,36 @@
 import { useState } from 'react';
+import { addCarts } from '../../app/redux/slices/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './_pizza-block.module.scss';
 
 const PizzaCard = ({ id, imageUrl, title, types, sizes, price, category, rating }) => {
+	const dispatch = useDispatch();
+
 	const pizzaType = ['тонкое', 'стандартное'];
 	const [activeType, setActiveType] = useState(0);
 	const [activeSize, setActiveSize] = useState(0);
+
+	const currentPizzas = useSelector((state) =>
+		state.cartSlice.pizzasInCart.find(
+			(e) => e.uniqueCode === `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`,
+		),
+	);
+
+	const toCart = () => {
+		dispatch(
+			addCarts({
+				imageUrl: imageUrl,
+				title: title,
+				type: pizzaType[activeType],
+				size: sizes[activeSize],
+				price: price,
+
+				id: id,
+				uniqueCode: `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`,
+			}),
+		);
+	};
 
 	return (
 		<div className={styles['pizza-block']}>
@@ -47,7 +72,12 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price, category, rating 
 			</div>
 			<div className={styles['pizza-block__bottom']}>
 				<div className={styles['pizza-block__price']}>от {price} ₽</div>
-				<div className={`${styles.button} ${styles['button--outline']} ${styles['button--add']} `}>
+				<div
+					onClick={() => {
+						toCart();
+					}}
+					className={`${styles.button} ${styles['button--outline']} ${styles['button--add']} `}
+				>
 					<svg
 						width="12"
 						height="12"
@@ -61,7 +91,7 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price, category, rating 
 						/>
 					</svg>
 					<span>Добавить</span>
-					<i>2</i>
+					{currentPizzas && <i>{currentPizzas.count}</i>}
 				</div>
 			</div>
 		</div>

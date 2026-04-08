@@ -43,9 +43,10 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		margin-bottom: 15px;
 
 		&-img {
-			width: 10%;
+			width: 7%;
 		}
 		&-title {
 			h3 {
@@ -53,6 +54,7 @@
 				font-weight: bold;
 				line-height: 27px;
 				letter-spacing: 0.01em;
+				text-align: left;
 			}
 
 			span {
@@ -202,6 +204,55 @@
 
 			&:hover {
 				background: variables.$orange;
+				color: white;
+			}
+		}
+	}
+
+	&--empty {
+		margin: 0 auto;
+		width: 560px;
+		text-align: center;
+
+		h2 {
+			font-size: 32px;
+			margin-bottom: 10px;
+		}
+
+		p {
+			font-size: 18px;
+			line-height: 145.4%;
+			letter-spacing: 0.01em;
+			color: #777777;
+		}
+
+		icon {
+			position: relative;
+			top: 2px;
+		}
+
+		img {
+			display: block;
+			width: 300px;
+			margin: 45px auto 60px;
+		}
+
+		.button--black {
+			color: variables.$black;
+			background: transparent;
+			color: variables.$black;
+			border: 2px solid variables.$black;
+			width: 210px;
+			border-radius: 30px;
+			padding: 10px 20px;
+			font-size: 20px;
+			cursor: pointer;
+			transition:
+				background-color 0.2s ease,
+				border-color 0.2s ease;
+
+			&:hover {
+				background: variables.$black;
 				color: white;
 			}
 		}

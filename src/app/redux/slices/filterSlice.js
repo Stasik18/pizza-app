@@ -25,7 +25,6 @@ const filterSlice = createSlice({
 			state.typeFilter = action.payload;
 		},
 		setQueryParams(state, action) {
-			console.log(action.payload);
 			state.currentCategory = +action.payload.currentCategory;
 			state.currentPage = +action.payload.currentPage;
 			state.typeFilter = action.payload.typeFilter;
