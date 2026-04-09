@@ -9,7 +9,7 @@ import CartEmpty from './CartEmpty';
 
 const Cart = () => {
 	const dispatch = useDispatch();
-	const { totalPrice, pizzasInCart } = useSelector((state) => state.cartSlice);
+	const { pizzasInCart } = useSelector((state) => state.cartSlice);
 
 	const pizzasCount = pizzasInCart.reduce((acc, elem) => {
 		return (acc += elem.count);

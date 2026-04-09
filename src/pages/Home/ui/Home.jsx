@@ -20,7 +20,6 @@ const Home = () => {
 	const { items, status } = useSelector((state) => state.pizzasSlice);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const [loading, setLoading] = useState(false);
 	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
 	const isMounting = useRef(false);
 
@@ -63,7 +62,7 @@ const Home = () => {
 			}),
 		);
 		isMounting.current = true;
-	}, [typeFilter.type, currentCategory, currentPage]);
+	}, [typeFilter.type, currentCategory, currentPage, searchText]);
 
 	return (
 		<div className="content">

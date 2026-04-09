@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './_pizza-block.module.scss';
 
+const findPizzaInCart = (itemsInCart, uniqueCode) => {
+	return itemsInCart.find((e) => e.uniqueCode === uniqueCode);
+};
+
 const PizzaCard = ({ id, imageUrl, title, types, sizes, price, category, rating }) => {
+	const itemsInCart = useSelector((state) => state.cartSlice.pizzasInCart);
 	const dispatch = useDispatch();
 
 	const pizzaType = ['тонкое', 'стандартное'];
 	const [activeType, setActiveType] = useState(0);
 	const [activeSize, setActiveSize] = useState(0);
+	const uniqueCode = `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`;
 
-	const currentPizzas = useSelector((state) =>
-		state.cartSlice.pizzasInCart.find(
-			(e) => e.uniqueCode === `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`,
-		),
-	);
+	const currentPizzas = findPizzaInCart(itemsInCart, uniqueCode);
 
 	const toCart = () => {
 		dispatch(

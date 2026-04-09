@@ -4,8 +4,8 @@ import logoSvg from '../../../shared/assets/img/pizza-logo.svg';
 import Search from '../../../features/filters/ui/search';
 import { useSelector } from 'react-redux';
 
-const Header = ({ searchValue, setSearchValue }) => {
-	const { pizzasInCart, totalPrice, totalCount } = useSelector((state) => state.cartSlice);
+const Header = () => {
+	const { pizzasInCart } = useSelector((state) => state.cartSlice);
 
 	const pizzasCount = pizzasInCart.reduce((acc, elem) => {
 		return (acc += elem.count);
