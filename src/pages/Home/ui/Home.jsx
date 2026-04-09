@@ -2,7 +2,6 @@ import { use, useState, useRef, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import QueryString from 'qs';
-import axios from 'axios';
 
 import '../../../app/styles/app.scss';
 
@@ -11,31 +10,22 @@ import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
 import { sortCategory } from '../../../features/filters/ui/sort/Sort';
-import {
-	setCategoryId,
-	setTypeFilter,
-	setCurrentPage,
-	setQueryParams,
-} from '../../../app/redux/slices/filterSlice';
+import { setQueryParams } from '../../../app/redux/slices/filterSlice';
 import LoadingFetch from '../../../shared/api/LoadingFetch';
+import { fetchPizza } from '../../../app/redux/slices/pizzasSlice';
 
 const Home = () => {
 	const { currentPage, typeFilter, currentCategory } = useSelector((state) => state.filterSlice);
 	const searchText = useSelector((state) => state.searchSlice.searchText);
+	const { items, status } = useSelector((state) => state.pizzasSlice);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
-	const [pizzas, setPizzas] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
-	const [isLoading, setIsLoading] = useState(false);
-
-	const search = searchText ? `${searchText}` : ''; // что вообще тут поменяется ебать
-
 	const isMounting = useRef(false);
 
 	useEffect(() => {
+		// если не пусто в адресной строке, собираем фильтры оттуда
 		if (window.location.search) {
 			const params = QueryString.parse(window.location.search.substring(1));
 
@@ -52,6 +42,7 @@ const Home = () => {
 		}
 	}, []);
 
+	//собираем адресуню строку из наших параметров после первого рендера + запрос
 	useEffect(() => {
 		if (isMounting.current) {
 			const queryString = QueryString.stringify({
@@ -62,36 +53,17 @@ const Home = () => {
 
 			navigate(`?${queryString}`);
 		}
+		dispatch(
+			fetchPizza({
+				typeFilter: typeFilter.type,
+				sortOrder,
+				currentCategory,
+				searchText,
+				currentPage,
+			}),
+		);
 		isMounting.current = true;
-		setIsLoading(true);
 	}, [typeFilter.type, currentCategory, currentPage]);
-
-	useEffect(() => {
-		if (isLoading) {
-			setLoading(true);
-			const loadPizza = async () => {
-				const url = new URL(
-					`https://6989c620c04d974bc6a05c40.mockapi.io/items?&sortBy=rating&order=asc`,
-				);
-				url.searchParams.set('sortBy', typeFilter.type);
-				url.searchParams.set('search', search);
-				url.searchParams.set('page', currentPage);
-				url.searchParams.set('limit', 4);
-				currentCategory === 0 ? url : url.searchParams.append('category', currentCategory);
-				try {
-					const response = await axios.get(url);
-					const data = await response.data;
-					setPizzas(data);
-				} catch (e) {
-					setError(e);
-				} finally {
-					setLoading(false);
-				}
-			};
-
-			loadPizza();
-		}
-	}, [typeFilter.type, sortOrder, currentCategory, searchText, currentPage, isLoading]);
 
 	return (
 		<div className="content">
@@ -102,10 +74,10 @@ const Home = () => {
 				</div>
 				<h2 className="content__title">Все пиццы</h2>
 				<div className="content__items">
-					{loading ? (
+					{status === 'loading' ? (
 						<LoadingFetch />
 					) : (
-						pizzas.map((card) => {
+						items.map((card) => {
 							return <PizzaCard {...card} key={card.id} />;
 						})
 					)}
