@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from '../../../app/redux/slices/cartSlice';
+import { clearCart, selectCart } from '../../../app/redux/slices/cartSlice';
 
 import { Link } from 'react-router-dom';
 import CartItem from './CartItem';
@@ -9,14 +9,7 @@ import CartEmpty from './CartEmpty';
 
 const Cart = () => {
 	const dispatch = useDispatch();
-	const { pizzasInCart } = useSelector((state) => state.cartSlice);
-
-	const pizzasCount = pizzasInCart.reduce((acc, elem) => {
-		return (acc += elem.count);
-	}, 0);
-	const pizzasSum = pizzasInCart.reduce((acc, elem) => {
-		return (acc += elem.count * elem.price);
-	}, 0);
+	const { pizzasInCart, totalPrice, totalCount } = useSelector(selectCart);
 
 	return (
 		<div className={styles['content']}>
@@ -61,11 +54,11 @@ const Cart = () => {
 						<div className={styles['cart__total']}>
 							<div className="cart__total-count">
 								<p>Всего пицц:</p>
-								<span>{pizzasCount} шт.</span>
+								<span>{totalCount} шт.</span>
 							</div>
 							<div className="cart__total-price">
 								<p>Сумма заказа:</p>
-								<span>{pizzasSum} ₽</span>
+								<span>{totalPrice} ₽</span>
 							</div>
 						</div>
 						<div className={styles['cart__footer']}>

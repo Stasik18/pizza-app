@@ -1,5 +1,4 @@
 import { useCallback, useContext, useRef, useState } from 'react';
-import { SearchValue } from '../../../../app/App';
 import debounce from 'lodash.debounce';
 
 import styles from './search.module.scss';
@@ -19,7 +18,6 @@ const Search = () => {
 		[],
 	);
 
-	const inputValueOnChange = (e) => {};
 	return (
 		<div className={styles.root}>
 			<svg

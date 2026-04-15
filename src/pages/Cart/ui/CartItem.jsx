@@ -4,7 +4,7 @@ import styles from './_cart.module.scss';
 
 const CartItem = ({ pizzaItemInCart }) => {
 	const dispatch = useDispatch();
-	console.log(pizzaItemInCart.uniqueCode);
+
 	return (
 		<div className={styles['cart__item']}>
 			<img className={styles['cart__item-img']} src={pizzaItemInCart.imageUrl} />

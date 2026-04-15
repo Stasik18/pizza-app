@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 import { setCurrentPage } from '../../app/redux/slices/filterSlice';
 import BPagination from '../../shared/ui/Button/BPagination/BPagination';
@@ -7,15 +8,24 @@ import styles from './pagination.module.scss';
 const Pagination = ({ totalPage }) => {
 	const currentPage = useSelector((state) => state.filterSlice.currentPage);
 	const dispatch = useDispatch();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const prevPage = () => {
 		if (currentPage >= 2) {
 			dispatch(setCurrentPage(currentPage - 1));
+			setSearchParams((prev) => {
+				prev.set('currentPage', currentPage - 1);
+				return prev;
+			});
 		}
 	};
 
 	const prevNext = () => {
 		if (currentPage < totalPage) {
 			dispatch(setCurrentPage(currentPage + 1));
+			setSearchParams((prev) => {
+				prev.set('currentPage', currentPage + 1);
+				return prev;
+			});
 		}
 	};
 

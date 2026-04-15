@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { pizzaApi } from '../../../entities/pizza/api/pizzaApi';
 
-export const fetchPizza = createAsyncThunk('pizzas/fetchPizza', async (params) => {
+export const fetchPizza = createAsyncThunk('pizzas/fetchPizza', async (params, thunkAPI) => {
 	const response = await pizzaApi.fetchAll(params);
-	return response.data;
+
+	if (response.data.length === 0) return thunkAPI.rejectWithValue('пиццы съедены');
+
+	return thunkAPI.fulfillWithValue(response.data);
 });
 
 const initialState = {
@@ -26,11 +29,9 @@ const pizzasSlice = createSlice({
 				state.status = 'success';
 				state.items = action.payload;
 			})
-			.addCase(fetchPizza.rejected, (state, action) => {
+			.addCase(fetchPizza.rejected, (state) => {
 				state.status = 'error';
 				state.items = [];
-
-				console.log(action.payload);
 			});
 	},
 });

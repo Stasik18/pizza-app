@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
-
+import { useSearchParams } from 'react-router-dom';
 import styles from './_sort.module.scss';
 
 export const sortCategory = [
@@ -11,8 +11,10 @@ export const sortCategory = [
 ];
 
 const Sort = () => {
-	const typeFilter = useSelector((state) => state.filterSlice.typeFilter);
+	const [searchParams, setSearchParams] = useSearchParams();
 
+	const typeFilter = searchParams.get('typeFilter');
+	console.log(searchParams.get('typeFilter'));
 	const dispatch = useDispatch();
 
 	const [open, setOpen] = useState(false);
@@ -55,7 +57,7 @@ const Sort = () => {
 				<b>Сортировка по:</b>
 				<span>
 					{sortCategory.map((elem) => {
-						return elem.type === typeFilter.type ? elem.title : '';
+						return elem.type === typeFilter ? elem.title : '';
 					})}
 				</span>
 			</div>
@@ -72,10 +74,14 @@ const Sort = () => {
 								onClick={() => {
 									setOpen(!open);
 									dispatch(setTypeFilter({ type: elem.type, name: elem.title }));
+									setSearchParams((prev) => {
+										prev.set('typeFilter', elem.type);
+										return prev;
+									});
 								}}
 								type
 								className={`
-								${typeFilter.type === elem.type ? styles.active : ''}
+								${typeFilter === elem.type ? styles.active : ''}
 								`}
 								key={elem.id}
 							>

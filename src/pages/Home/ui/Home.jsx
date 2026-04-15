@@ -1,6 +1,6 @@
 import { use, useState, useRef, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import QueryString from 'qs';
 
 import '../../../app/styles/app.scss';
@@ -15,54 +15,32 @@ import LoadingFetch from '../../../shared/api/LoadingFetch';
 import { fetchPizza } from '../../../app/redux/slices/pizzasSlice';
 
 const Home = () => {
-	const { currentPage, typeFilter, currentCategory } = useSelector((state) => state.filterSlice);
 	const searchText = useSelector((state) => state.searchSlice.searchText);
 	const { items, status } = useSelector((state) => state.pizzasSlice);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
+
 	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
-	const isMounting = useRef(false);
+
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const typeFilter =
+		searchParams.get('typeFilter') === null ? 'rating' : searchParams.get('typeFilter');
+	const currentPage =
+		searchParams.get('currentPage') === null ? 1 : searchParams.get('currentPage');
+	const currentCategory =
+		searchParams.get('currentCategory') === null ? 0 : searchParams.get('currentCategory');
 
 	useEffect(() => {
-		// если не пусто в адресной строке, собираем фильтры оттуда
-		if (window.location.search) {
-			const params = QueryString.parse(window.location.search.substring(1));
+		const params = {
+			typeFilter,
+			currentPage,
+			searchText,
+		};
+		console.log(typeof currentCategory);
+		Number(currentCategory) !== 0 ? (params.currentCategory = currentCategory) : params;
 
-			const typeFilter = sortCategory.find((e) => {
-				return e.type === params.typeFilter;
-			});
-
-			dispatch(
-				setQueryParams({
-					...params,
-					typeFilter,
-				}),
-			);
-		}
-	}, []);
-
-	//собираем адресуню строку из наших параметров после первого рендера + запрос
-	useEffect(() => {
-		if (isMounting.current) {
-			const queryString = QueryString.stringify({
-				typeFilter: typeFilter.type,
-				currentPage: currentPage,
-				currentCategory: currentCategory,
-			});
-
-			navigate(`?${queryString}`);
-		}
-		dispatch(
-			fetchPizza({
-				typeFilter: typeFilter.type,
-				sortOrder,
-				currentCategory,
-				searchText,
-				currentPage,
-			}),
-		);
-		isMounting.current = true;
-	}, [typeFilter.type, currentCategory, currentPage, searchText]);
+		dispatch(fetchPizza(params));
+	}, [currentPage, typeFilter, currentCategory, searchText]);
 
 	return (
 		<div className="content">
@@ -77,6 +55,7 @@ const Home = () => {
 						<LoadingFetch />
 					) : (
 						items.map((card) => {
+							console.log(card);
 							return <PizzaCard {...card} key={card.id} />;
 						})
 					)}
