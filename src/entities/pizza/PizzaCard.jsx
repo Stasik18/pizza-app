@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { addCarts } from '../../app/redux/slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCart } from '../../app/redux/slices/cartSlice';
@@ -37,8 +39,10 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
 
 	return (
 		<div className={styles['pizza-block']}>
-			<img className={styles['pizza-block__image']} src={imageUrl} alt="Pizza" />
-			<h4 className={styles['pizza-block__title']}>{title}</h4>
+			<Link to={`pizza/${id}`}>
+				<img className={styles['pizza-block__image']} src={imageUrl} alt="Pizza" />
+				<h4 className={styles['pizza-block__title']}>{title}</h4>
+			</Link>
 			<div className={styles['pizza-block__selector']}>
 				<ul>
 					{types.map((elem, index) => {

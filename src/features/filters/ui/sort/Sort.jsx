@@ -13,8 +13,9 @@ export const sortCategory = [
 const Sort = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const typeFilter = searchParams.get('typeFilter');
-	console.log(searchParams.get('typeFilter'));
+	const typeFilter =
+		searchParams.get('typeFilter') === null ? 'rating' : searchParams.get('typeFilter');
+
 	const dispatch = useDispatch();
 
 	const [open, setOpen] = useState(false);

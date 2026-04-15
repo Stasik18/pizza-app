@@ -10,7 +10,7 @@ import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
 import { sortCategory } from '../../../features/filters/ui/sort/Sort';
-import { setQueryParams } from '../../../app/redux/slices/filterSlice';
+
 import LoadingFetch from '../../../shared/api/LoadingFetch';
 import { fetchPizza } from '../../../app/redux/slices/pizzasSlice';
 
@@ -36,7 +36,7 @@ const Home = () => {
 			currentPage,
 			searchText,
 		};
-		console.log(typeof currentCategory);
+
 		Number(currentCategory) !== 0 ? (params.currentCategory = currentCategory) : params;
 
 		dispatch(fetchPizza(params));
@@ -55,7 +55,6 @@ const Home = () => {
 						<LoadingFetch />
 					) : (
 						items.map((card) => {
-							console.log(card);
 							return <PizzaCard {...card} key={card.id} />;
 						})
 					)}
