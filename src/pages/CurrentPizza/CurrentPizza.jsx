@@ -14,6 +14,8 @@ const findCurrentPizza = (pizzas, uniqueCode) => {
 	return pizzas.find((e) => e.uniqueCode === uniqueCode);
 };
 
+const pizzaType = ['тонкое', 'стандартное'];
+
 const CurrentPizza = () => {
 	const { pizzasInCart } = useSelector(selectCart);
 	const { id } = useParams();
@@ -23,7 +25,6 @@ const CurrentPizza = () => {
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 
-	const pizzaType = ['тонкое', 'стандартное'];
 	const [activeType, setActiveType] = useState(0);
 	const [activeSize, setActiveSize] = useState(0);
 
@@ -33,7 +34,6 @@ const CurrentPizza = () => {
 				const response = await axios.get('https://6989c620c04d974bc6a05c40.mockapi.io/items/' + id);
 				setCurrentPizza(response.data);
 			} catch (error) {
-				alert('Такой Пиццы нет');
 				setError(true);
 			}
 		};
@@ -43,6 +43,7 @@ const CurrentPizza = () => {
 
 	useEffect(() => {
 		if (error) {
+			alert('Такой Пиццы нет');
 			navigate('/');
 		}
 	}, [error]);
@@ -73,7 +74,7 @@ const CurrentPizza = () => {
 				price: currentPizza.price,
 
 				id: currentPizza.id,
-				uniqueCode: `${pizzaType[activeType]}, ${currentPizza.sizes[activeSize]}, ${currentPizza.id}`,
+				uniqueCode: memorUniqueCode,
 			}),
 		);
 	};

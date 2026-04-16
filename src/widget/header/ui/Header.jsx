@@ -8,7 +8,7 @@ import styles from './_header.module.scss';
 
 const Header = () => {
 	const { totalPrice, totalCount } = useSelector(selectCart);
-	const viewBtn = useLocation();
+	const currentLocation = useLocation();
 
 	return (
 		<div className={styles.header}>
@@ -24,7 +24,7 @@ const Header = () => {
 				</Link>
 				<Search />
 				<div className={styles['header__cart']}>
-					{viewBtn.pathname !== '/cart' && (
+					{currentLocation.pathname !== '/cart' && (
 						<Link to="/cart" className={`${styles['button']} ${styles['button--cart']}`}>
 							<span>{totalPrice} ₽</span>
 							<div className={styles['button__delimiter']}></div>

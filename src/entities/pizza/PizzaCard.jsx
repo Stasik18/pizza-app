@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { addCarts } from '../../app/redux/slices/cartSlice';
@@ -10,17 +10,24 @@ import styles from './_pizza-block.module.scss';
 const findPizzaInCart = (itemsInCart, uniqueCode) => {
 	return itemsInCart.pizzasInCart.find((e) => e.uniqueCode === uniqueCode);
 };
+const pizzaType = ['тонкое', 'стандартное'];
 
 const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
 	const itemsInCart = useSelector(selectCart);
 	const dispatch = useDispatch();
 
-	const pizzaType = ['тонкое', 'стандартное'];
 	const [activeType, setActiveType] = useState(0);
 	const [activeSize, setActiveSize] = useState(0);
 
-	const uniqueCode = `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`;
-	const currentPizzas = findPizzaInCart(itemsInCart, uniqueCode);
+	const memoUniqueCode = useMemo(() => {
+		const uniqueCode = `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`;
+		return uniqueCode;
+	}, [activeType, activeSize, id]);
+
+	const memoCurrentPizza = useMemo(() => {
+		const currentPizza = findPizzaInCart(itemsInCart, memoUniqueCode);
+		return currentPizza;
+	}, [itemsInCart, memoUniqueCode]);
 
 	const toCart = () => {
 		dispatch(
@@ -32,7 +39,7 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
 				price: price,
 
 				id: id,
-				uniqueCode: `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`,
+				uniqueCode: memoUniqueCode,
 			}),
 		);
 	};
@@ -98,7 +105,7 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
 						/>
 					</svg>
 					<span>Добавить</span>
-					{currentPizzas && <i>{currentPizzas.count}</i>}
+					{memoCurrentPizza && <i>{memoCurrentPizza.count}</i>}
 				</div>
 			</div>
 		</div>
