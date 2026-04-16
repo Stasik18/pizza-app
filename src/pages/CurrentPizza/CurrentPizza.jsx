@@ -2,12 +2,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import styles from './currentPizza.module.scss';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
+
+const findCurrentPizza = (pizzas, uniqueCode) => {
+	if (pizzas.length === 0) {
+		return false;
+	}
+	console.log(pizzas, uniqueCode);
+	return pizzas.find((e) => e.uniqueCode === uniqueCode);
+};
 
 const CurrentPizza = () => {
+	const { pizzasInCart } = useSelector(selectCart);
 	const { id } = useParams();
 	const [currentPizza, setCurrentPizza] = useState(null);
 
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 
@@ -38,47 +50,81 @@ const CurrentPizza = () => {
 	if (!currentPizza) {
 		return 'Загрузка';
 	}
+
+	const memorUniqueCode = useMemo(() => {
+		const uniqueCode = `${pizzaType[activeType]}, ${currentPizza.sizes[activeSize]}, ${currentPizza.id}`;
+
+		return uniqueCode;
+	}, [currentPizza.id, activeSize, activeType]);
+
+	const memorCurrentPizzaCount = useMemo(() => {
+		const currentPizzaCount = findCurrentPizza(pizzasInCart, memorUniqueCode);
+
+		return currentPizzaCount;
+	}, [memorUniqueCode, pizzasInCart]);
+
+	const toCart = () => {
+		dispatch(
+			addCarts({
+				imageUrl: currentPizza.imageUrl,
+				title: currentPizza.title,
+				type: pizzaType[activeType],
+				size: currentPizza.sizes[activeSize],
+				price: currentPizza.price,
+
+				id: currentPizza.id,
+				uniqueCode: `${pizzaType[activeType]}, ${currentPizza.sizes[activeSize]}, ${currentPizza.id}`,
+			}),
+		);
+	};
+
 	return (
-		<div className={styles.currentPizza}>
-			<section className={styles['currentPizza__left']}>
-				<h2 className={styles['currentPizza__title']}>{currentPizza.title}</h2>
-				<img className={styles['currentPizza__img']} src={currentPizza.imageUrl} alt="Pizza" />
-			</section>
-			<section className={styles['currentPizza__right']}>
-				<p className={styles['currentPizza__info']}>Как бы текст про пиццу с бека</p>
-				<ul>
-					{currentPizza.types.map((elem, index) => {
-						return (
-							<li
-								onClick={() => setActiveType(index)}
-								className={`
+		<div className={styles['currentPizza']}>
+			<div className={styles['currentPizza__wrapper']}>
+				<section className={styles['currentPizza__left']}>
+					<img className={styles['currentPizza__img']} src={currentPizza.imageUrl} alt="Pizza" />
+				</section>
+				<section className={styles['currentPizza__right']}>
+					<h2 className={styles['currentPizza__title']}>{currentPizza.title}</h2>
+					<p className={styles['currentPizza__info']}>Как бы текст про пиццу с бека</p>
+					<ul className={styles['currentPizza__type']}>
+						{currentPizza.types.map((elem, index) => {
+							return (
+								<li
+									onClick={() => setActiveType(index)}
+									className={`
 										${activeType === index ? styles.active : ''}
 										`}
-								key={elem}
-							>
-								{pizzaType[index]}
-							</li>
-						);
-					})}
-				</ul>
-				<ul>
-					{currentPizza.sizes.map((elem, index) => {
-						return (
-							<li
-								onClick={() => {
-									setActiveSize(index);
-								}}
-								className={`
+									key={elem}
+								>
+									{pizzaType[index]}
+								</li>
+							);
+						})}
+					</ul>
+					<ul className={styles['currentPizza__size']}>
+						{currentPizza.sizes.map((elem, index) => {
+							return (
+								<li
+									onClick={() => {
+										setActiveSize(index);
+									}}
+									className={`
 												${activeSize === index ? styles.active : ''}
 												`}
-								key={elem}
-							>
-								{elem}см.
-							</li>
-						);
-					})}
-				</ul>
-			</section>
+									key={elem}
+								>
+									{elem}см
+								</li>
+							);
+						})}
+					</ul>
+					<span className={styles['currentPizza__price']}>Стоимость - {currentPizza.price} ₽</span>
+					<button onClick={() => toCart()} className={styles['currentPizza__btn']}>
+						Добавить {memorCurrentPizzaCount && <i>{memorCurrentPizzaCount.count}</i>}
+					</button>
+				</section>
+			</div>
 		</div>
 	);
 };
