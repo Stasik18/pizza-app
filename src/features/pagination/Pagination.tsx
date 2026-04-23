@@ -1,19 +1,25 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import { setCurrentPage } from '../../app/redux/slices/filterSlice';
 import BPagination from '../../shared/ui/Button/BPagination/BPagination';
 import styles from './pagination.module.scss';
-const Pagination = ({ totalPage }) => {
-	const currentPage = useSelector((state) => state.filterSlice.currentPage);
-	const dispatch = useDispatch();
+
+interface PaginationProps {
+	totalPage: number;
+}
+
+const Pagination: React.FC<PaginationProps> = ({ totalPage }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const currentPage = Number(searchParams.get('currentPage') ?? 1);
+	const dispatch = useDispatch();
 	const prevPage = () => {
 		if (currentPage >= 2) {
 			dispatch(setCurrentPage(currentPage - 1));
 			setSearchParams((prev) => {
-				prev.set('currentPage', currentPage - 1);
+				prev.set('currentPage', String(currentPage - 1));
 				return prev;
 			});
 		}
@@ -23,13 +29,13 @@ const Pagination = ({ totalPage }) => {
 		if (currentPage < totalPage) {
 			dispatch(setCurrentPage(currentPage + 1));
 			setSearchParams((prev) => {
-				prev.set('currentPage', currentPage + 1);
+				prev.set('currentPage', String(currentPage + 1));
 				return prev;
 			});
 		}
 	};
 
-	const newFunc = (page, totalPage) => {
+	const newFunc = (page: number, totalPage: number) => {
 		let forJob = [];
 		let result = [];
 

@@ -13,7 +13,7 @@ const categories = [
 const Categories = () => {
 	const dispatch = useDispatch();
 	const [searchParams, setSearchParams] = useSearchParams();
-	const filter = +searchParams.get('currentCategory');
+	const filter = +searchParams.get('currentCategory')!;
 
 	return (
 		<div className={styles['categories']}>
@@ -26,7 +26,7 @@ const Categories = () => {
 								dispatch(setCategoryId(elem.id));
 								setSearchParams((prev) => {
 									elem.id !== 0
-										? prev.set('currentCategory', elem.id)
+										? prev.set('currentCategory', String(elem.id))
 										: prev.delete('currentCategory');
 									return prev;
 								});

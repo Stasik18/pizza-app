@@ -1,6 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+interface forInitialStateSearchSlice {
+	searchText: string;
+}
+
+const initialState: forInitialStateSearchSlice = {
 	searchText: '',
 };
 
@@ -8,7 +12,7 @@ const searchSlice = createSlice({
 	name: 'search',
 	initialState,
 	reducers: {
-		setSearch(state, action) {
+		setSearch(state, action: PayloadAction<string>) {
 			state.searchText = action.payload;
 		},
 	},

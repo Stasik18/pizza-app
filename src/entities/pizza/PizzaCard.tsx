@@ -1,35 +1,55 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { addCarts } from '../../app/redux/slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCart } from '../../app/redux/slices/cartSlice';
+import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
 
 import styles from './_pizza-block.module.scss';
 
-const findPizzaInCart = (itemsInCart, uniqueCode) => {
-	return itemsInCart.pizzasInCart.find((e) => e.uniqueCode === uniqueCode);
-};
-const pizzaType = ['тонкое', 'стандартное'];
+interface PizzaInCart {
+	imageUrl: string;
+	title: string;
+	type: string;
+	size: number;
+	price: number;
+	id: number;
+	uniqueCode: string;
+	count?: number;
+}
 
-const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
+interface PizzaCardProps {
+	id: number;
+	imageUrl: string;
+	title: string;
+	types: number[];
+	sizes: number[];
+	price: number;
+}
+
+const findPizzaInCart = (itemsInCart: PizzaInCart[], uniqueCode: string) => {
+	return itemsInCart.find((e) => e.uniqueCode === uniqueCode);
+};
+const pizzaType: string[] = ['тонкое', 'стандартное'];
+
+const PizzaCard: React.FC<PizzaCardProps> = ({ id, imageUrl, title, types, sizes, price }) => {
 	const itemsInCart = useSelector(selectCart);
 	const dispatch = useDispatch();
 
-	const [activeType, setActiveType] = useState(0);
-	const [activeSize, setActiveSize] = useState(0);
+	const [activeType, setActiveType] = useState<number>(0);
+	const [activeSize, setActiveSize] = useState<number>(0);
 
 	const memoUniqueCode = useMemo(() => {
-		const uniqueCode = `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`;
+		const uniqueCode: string = `${pizzaType[activeType]}, ${sizes[activeSize]}, ${id}`;
 		return uniqueCode;
 	}, [activeType, activeSize, id]);
 
 	const memoCurrentPizza = useMemo(() => {
-		const currentPizza = findPizzaInCart(itemsInCart, memoUniqueCode);
+		const currentPizza = findPizzaInCart(itemsInCart.pizzasInCart, memoUniqueCode);
 		return currentPizza;
-	}, [itemsInCart, memoUniqueCode]);
+	}, [itemsInCart.pizzasInCart, memoUniqueCode]);
 
 	const toCart = () => {
+		console.log(2);
 		dispatch(
 			addCarts({
 				imageUrl: imageUrl,
@@ -37,7 +57,6 @@ const PizzaCard = ({ id, imageUrl, title, types, sizes, price }) => {
 				type: pizzaType[activeType],
 				size: sizes[activeSize],
 				price: price,
-
 				id: id,
 				uniqueCode: memoUniqueCode,
 			}),

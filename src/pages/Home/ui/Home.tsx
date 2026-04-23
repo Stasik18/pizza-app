@@ -1,7 +1,6 @@
-import { use, useState, useRef, useEffect, useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import QueryString from 'qs';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 import '../../../app/styles/app.scss';
 
@@ -9,29 +8,32 @@ import PizzaCard from '../../../entities/pizza/PizzaCard';
 import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
-import { sortCategory } from '../../../features/filters/ui/sort/Sort';
 
-import LoadingFetch from '../../../shared/api/LoadingFetch';
 import { fetchPizza } from '../../../app/redux/slices/pizzasSlice';
+import { AppDispatch, RootState } from '../../../app/redux/store/store';
+import LoadingFetch from '../../../shared/api/LoadingFetch';
 
 const Home = () => {
-	const searchText = useSelector((state) => state.searchSlice.searchText);
-	const { items, status } = useSelector((state) => state.pizzasSlice);
-	const dispatch = useDispatch();
+	const searchText: string = useSelector((state: RootState) => state.searchSlice.searchText);
+	const { items, status } = useSelector((state: RootState) => state.pizzasSlice);
+	const dispatch = useDispatch<AppDispatch>();
 
 	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
 
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const typeFilter =
-		searchParams.get('typeFilter') === null ? 'rating' : searchParams.get('typeFilter');
-	const currentPage =
-		searchParams.get('currentPage') === null ? 1 : searchParams.get('currentPage');
-	const currentCategory =
-		searchParams.get('currentCategory') === null ? 0 : searchParams.get('currentCategory');
+	const typeFilter: string = searchParams.get('typeFilter') ?? 'rating';
+	const currentPage: number = Number(searchParams.get('currentPage') ?? 1);
+	const currentCategory: number = Number(searchParams.get('currentCategory') ?? 0);
 
 	useEffect(() => {
-		const params = {
+		interface FetchPizzaParams {
+			typeFilter: string;
+			currentPage: number;
+			searchText: string;
+			currentCategory?: number;
+		}
+		const params: FetchPizzaParams = {
 			typeFilter,
 			currentPage,
 			searchText,

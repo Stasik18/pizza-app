@@ -2,7 +2,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removePizza, changePizzaCount } from '../../../app/redux/slices/cartSlice';
 import styles from './_cart.module.scss';
 
-const CartItem = ({ pizzaItemInCart }) => {
+interface PizzaInCart {
+	imageUrl: string;
+	title: string;
+	type: string;
+	size: number;
+	price: number;
+	id: number;
+	uniqueCode: string;
+	count?: number;
+}
+
+interface CartItemProp {
+	pizzaItemInCart: PizzaInCart;
+}
+
+const CartItem: React.FC<CartItemProp> = ({ pizzaItemInCart }) => {
 	const dispatch = useDispatch();
 
 	return (
@@ -34,7 +49,7 @@ const CartItem = ({ pizzaItemInCart }) => {
 				</button>
 			</div>
 			<div className={styles['cart__item-price']}>
-				{pizzaItemInCart.price * pizzaItemInCart.count} ₽
+				{pizzaItemInCart.count ? pizzaItemInCart.price * pizzaItemInCart.count : 0} ₽
 			</div>
 			<button
 				onClick={() => dispatch(removePizza(pizzaItemInCart.uniqueCode))}

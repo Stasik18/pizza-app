@@ -1,13 +1,20 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import { setCurrentPage } from '../../../../app/redux/slices/filterSlice';
 import styles from './bpagination.module.scss';
-const BPagination = ({ title }) => {
-	const currentPage = useSelector((state) => state.filterSlice.currentPage);
-	const dispatch = useDispatch();
+
+interface BPaginationProps {
+	title: number;
+}
+
+const BPagination: React.FC<BPaginationProps> = ({ title }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const currentPage = Number(searchParams.get('currentPage') ?? 1);
+
+	const dispatch = useDispatch();
 
 	return (
 		<>
@@ -15,7 +22,7 @@ const BPagination = ({ title }) => {
 				className={`${styles['pagination__button']} ${currentPage === title ? styles['pagination__button--active'] : ''}`}
 				onClick={() => {
 					setSearchParams((prev) => {
-						prev.set('currentPage', title);
+						prev.set('currentPage', String(title));
 						return prev;
 					});
 					dispatch(setCurrentPage(title));

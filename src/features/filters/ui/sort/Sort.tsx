@@ -1,10 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
 import styles from './_sort.module.scss';
 
-export const sortCategory = [
+interface SortOption {
+	title: 'популярности' | 'цене' | 'алфавиту';
+	id: 1 | 2 | 0;
+	type: 'rating' | 'price' | 'title';
+}
+
+export const sortCategory: SortOption[] = [
 	{ title: 'популярности', id: 0, type: 'rating' },
 	{ title: 'цене', id: 1, type: 'price' },
 	{ title: 'алфавиту', id: 2, type: 'title' },
@@ -18,15 +24,17 @@ const Sort = () => {
 
 	const dispatch = useDispatch();
 
-	const [open, setOpen] = useState(false);
-	const menuRef = useRef(false);
+	const [open, setOpen] = useState<boolean>(false);
+	const menuRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		function handlerClick(e) {
-			if (!menuRef.current.contains(e.target)) setOpen(false);
+		function handlerClick(e: MouseEvent) {
+			if (e.target instanceof HTMLElement) {
+				if (!menuRef.current?.contains(e.target)) setOpen(false);
+			}
 		}
 
-		function handlerEsc(e) {
+		function handlerEsc(e: KeyboardEvent) {
 			if (e.key === 'Escape') setOpen(false);
 		}
 
@@ -80,7 +88,6 @@ const Sort = () => {
 										return prev;
 									});
 								}}
-								type
 								className={`
 								${typeFilter === elem.type ? styles.active : ''}
 								`}

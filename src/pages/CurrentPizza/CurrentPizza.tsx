@@ -6,27 +6,48 @@ import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
 
-const findCurrentPizza = (pizzas, uniqueCode) => {
+interface PizzaResponse {
+	id: number;
+	imageUrl: string;
+	title: string;
+	types: number[];
+	sizes: number[];
+	price: number;
+	category: number;
+	rating: number;
+}
+
+interface PizzaInCart {
+	imageUrl: string;
+	title: string;
+	type: string;
+	size: number;
+	price: number;
+	id: number;
+	uniqueCode: string;
+	count?: number;
+}
+
+const findCurrentPizza = (pizzas: PizzaInCart[], uniqueCode: string) => {
 	if (pizzas.length === 0) {
 		return false;
 	}
-	console.log(pizzas, uniqueCode);
 	return pizzas.find((e) => e.uniqueCode === uniqueCode);
 };
 
-const pizzaType = ['тонкое', 'стандартное'];
+const pizzaType: string[] = ['тонкое', 'стандартное'];
 
 const CurrentPizza = () => {
 	const { pizzasInCart } = useSelector(selectCart);
 	const { id } = useParams();
-	const [currentPizza, setCurrentPizza] = useState(null);
+	const [currentPizza, setCurrentPizza] = useState<PizzaResponse>();
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 
-	const [activeType, setActiveType] = useState(0);
-	const [activeSize, setActiveSize] = useState(0);
+	const [activeType, setActiveType] = useState<number>(0);
+	const [activeSize, setActiveSize] = useState<number>(0);
 
 	useEffect(() => {
 		const fetchPizza = async () => {
@@ -53,7 +74,7 @@ const CurrentPizza = () => {
 	}
 
 	const memorUniqueCode = useMemo(() => {
-		const uniqueCode = `${pizzaType[activeType]}, ${currentPizza.sizes[activeSize]}, ${currentPizza.id}`;
+		const uniqueCode: string = `${pizzaType[activeType]}, ${currentPizza.sizes[activeSize]}, ${currentPizza.id}`;
 
 		return uniqueCode;
 	}, [currentPizza.id, activeSize, activeType]);

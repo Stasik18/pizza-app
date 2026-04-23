@@ -7,9 +7,8 @@ const CartEmpty = () => {
 	return (
 		<>
 			<div className={`${styles.cart} ${styles['cart--empty']}`}>
-				<h2>
-					Корзина пустая <icon>😕</icon>
-				</h2>
+				<h2>Корзина пустая 😕</h2>
+				<li></li>
 				<p>
 					Вероятней всего, вы не заказывали ещё пиццу.
 					<br />

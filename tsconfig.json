@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true, // Проверяет null/undefined
+		"noUnusedLocals": true, // Ругает на неиспользуемые переменные
+		"noUnusedParameters": true, // Ругает на неиспользуемые параметры
+		"noImplicitReturns": true, // Проверяет return во всех ветках
+		"noFallthroughCasesInSwitch": true, // Проверяет break в switch
+		"allowUnreachableCode": false, // Запрещает недостижимый код
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["src", "vite-env.d.ts"]
+}

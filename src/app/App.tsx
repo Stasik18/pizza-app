@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './styles/app.scss';
-import Layout from '../widget/layout/Layout.jsx';
-import Home from '../pages//Home/ui/Home.jsx';
-import Cart from '../pages/Cart/ui/Cart.jsx';
-import CurrentPizza from '../pages/CurrentPizza/CurrentPizza.jsx';
-import NotFound from '../pages/NotFound/ui/NotFound.jsx';
+import Layout from '../widget/layout/Layout';
+import Home from '../pages/Home/ui/Home';
+import Cart from '../pages/Cart/ui/Cart';
+import CurrentPizza from '../pages/CurrentPizza/CurrentPizza';
+import NotFound from '../pages/NotFound/ui/NotFound';
 
 function App() {
 	return (

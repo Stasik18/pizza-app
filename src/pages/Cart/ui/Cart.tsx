@@ -48,7 +48,7 @@ const Cart = () => {
 						</div>
 
 						{pizzasInCart.map((elem) => {
-							return <CartItem pizzaItemInCart={elem} />;
+							return <CartItem pizzaItemInCart={elem} key={elem.id} />;
 						})}
 
 						<div className={styles['cart__total']}>
