@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import styles from './currentPizza.module.scss';
 import axios from 'axios';
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
+import styles from './currentPizza.module.scss';
 
 interface PizzaResponse {
 	id: number;
@@ -28,11 +28,8 @@ interface PizzaInCart {
 	count?: number;
 }
 
-const findCurrentPizza = (pizzas: PizzaInCart[], uniqueCode: string) => {
-	if (pizzas.length === 0) {
-		return false;
-	}
-	return pizzas.find((e) => e.uniqueCode === uniqueCode);
+const findCurrentPizza = (pizzas: PizzaInCart[], uniqueCode: string): PizzaInCart | null => {
+	return pizzas.find((e) => e.uniqueCode === uniqueCode) ?? null;
 };
 
 const pizzaType: string[] = ['тонкое', 'стандартное'];

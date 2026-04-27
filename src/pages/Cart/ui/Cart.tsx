@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, selectCart } from '../../../app/redux/slices/cartSlice';
 
 import { Link } from 'react-router-dom';

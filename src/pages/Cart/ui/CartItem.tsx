@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { removePizza, changePizzaCount } from '../../../app/redux/slices/cartSlice';
+import { useDispatch } from 'react-redux';
+import { changePizzaCount, removePizza } from '../../../app/redux/slices/cartSlice';
 import styles from './_cart.module.scss';
 
 interface PizzaInCart {
@@ -18,6 +18,7 @@ interface CartItemProp {
 }
 
 const CartItem: React.FC<CartItemProp> = ({ pizzaItemInCart }) => {
+	console.log(pizzaItemInCart);
 	const dispatch = useDispatch();
 
 	return (

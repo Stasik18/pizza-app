@@ -1,15 +1,16 @@
-import { useCallback, useContext, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
+import { useCallback, useRef, useState } from 'react';
+import { RootState } from '../../../../app/redux/store/store';
 
-import styles from './search.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearch } from '../../../../app/redux/slices/searchSlice';
+import styles from './search.module.scss';
 
 const Search = () => {
-	const searchText = useSelector((state) => state.searchSlice.searchText);
+	const searchText = useSelector((state: RootState) => state.searchSlice.searchText);
 	const [localSearchText, setLocalSearchText] = useState('');
 	const dispatch = useDispatch();
-	const inputRef = useRef();
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const testDebounce = useCallback(
 		debounce((e) => {
@@ -47,7 +48,7 @@ const Search = () => {
 			{searchText && (
 				<svg
 					onClick={() => {
-						inputRef.current.focus();
+						inputRef.current?.focus();
 						setLocalSearchText('');
 						dispatch(setSearch(''));
 					}}

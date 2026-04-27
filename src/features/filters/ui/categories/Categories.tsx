@@ -1,8 +1,14 @@
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId } from '../../../../app/redux/slices/filterSlice';
 import styles from './_categories.module.scss';
-const categories = [
+
+type TCategories = {
+	name: string;
+	id: number;
+};
+
+const categories: TCategories[] = [
 	{ name: 'Все', id: 0 },
 	{ name: 'Мясные', id: 1 },
 	{ name: 'Вегетарианская', id: 2 },
@@ -13,7 +19,11 @@ const categories = [
 const Categories = () => {
 	const dispatch = useDispatch();
 	const [searchParams, setSearchParams] = useSearchParams();
-	const filter = +searchParams.get('currentCategory')!;
+
+	const filter =
+		searchParams.get('currentCategory') === null
+			? null
+			: Number(searchParams.get('currentCategory'));
 
 	return (
 		<div className={styles['categories']}>
