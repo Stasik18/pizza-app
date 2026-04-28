@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface forInitialStateSearchSlice {
+interface SearchState {
 	searchText: string;
 }
 
-const initialState: forInitialStateSearchSlice = {
+const initialState: SearchState = {
 	searchText: '',
 };
 

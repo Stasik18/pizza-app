@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../../app/redux/hooks';
 import { setCategoryId } from '../../../../app/redux/slices/filterSlice';
 import styles from './_categories.module.scss';
 
@@ -17,13 +17,11 @@ const categories: TCategories[] = [
 	{ name: 'Закрытые', id: 5 },
 ];
 const Categories = () => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const filter =
-		searchParams.get('currentCategory') === null
-			? null
-			: Number(searchParams.get('currentCategory'));
+		searchParams.get('currentCategory') === null ? 0 : Number(searchParams.get('currentCategory'));
 
 	return (
 		<div className={styles['categories']}>
@@ -33,11 +31,15 @@ const Categories = () => {
 						<li
 							key={elem.id}
 							onClick={() => {
+								// console.log(elem.id, filter); // разобрать
 								dispatch(setCategoryId(elem.id));
 								setSearchParams((prev) => {
-									elem.id !== 0
-										? prev.set('currentCategory', String(elem.id))
-										: prev.delete('currentCategory');
+									if (elem.id !== 0) {
+										prev.set('currentCategory', String(elem.id));
+									} else {
+										prev.delete('currentCategory');
+									}
+
 									return prev;
 								});
 							}}

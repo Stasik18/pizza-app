@@ -1,20 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../../app/redux/hooks';
 import { setTypeFilter } from '../../../../app/redux/slices/filterSlice';
 import styles from './_sort.module.scss';
 
-interface SortOption {
-	title: 'популярности' | 'цене' | 'алфавиту';
-	id: 1 | 2 | 0;
-	type: 'rating' | 'price' | 'title';
-}
-
-export const sortCategory: SortOption[] = [
+export const sortCategory = [
 	{ title: 'популярности', id: 0, type: 'rating' },
 	{ title: 'цене', id: 1, type: 'price' },
 	{ title: 'алфавиту', id: 2, type: 'title' },
-];
+] as const;
 
 const Sort = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -22,7 +16,7 @@ const Sort = () => {
 	const typeFilter =
 		searchParams.get('typeFilter') === null ? 'rating' : searchParams.get('typeFilter');
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [open, setOpen] = useState<boolean>(false);
 	const menuRef = useRef<HTMLDivElement>(null);

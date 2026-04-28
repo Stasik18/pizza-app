@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import '../../../app/styles/app.scss';
@@ -9,18 +8,16 @@ import Cotegories from '../../../features/filters/ui/categories/Categories';
 import Sort from '../../../features/filters/ui/sort/Sort';
 import Pagination from '../../../features/pagination/Pagination';
 
+import { useAppDispatch, useAppSelector } from '../../../app/redux/hooks';
 import { fetchPizza } from '../../../app/redux/slices/pizzasSlice';
-import { AppDispatch, RootState } from '../../../app/redux/store/store';
 import LoadingFetch from '../../../shared/api/LoadingFetch';
 
 const Home = () => {
-	const searchText: string = useSelector((state: RootState) => state.searchSlice.searchText);
-	const { items, status } = useSelector((state: RootState) => state.pizzasSlice);
-	const dispatch = useDispatch<AppDispatch>();
+	const searchText: string = useAppSelector((state) => state.searchSlice.searchText);
+	const { items, status } = useAppSelector((state) => state.pizzasSlice);
+	const dispatch = useAppDispatch();
 
-	const [sortOrder, setSortOrder] = useState('desc'); // допилить после redux
-
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams, _setSearchParams] = useSearchParams();
 
 	const typeFilter: string = searchParams.get('typeFilter') ?? 'rating';
 	const currentPage: number = Number(searchParams.get('currentPage') ?? 1);
@@ -39,7 +36,9 @@ const Home = () => {
 			searchText,
 		};
 
-		Number(currentCategory) !== 0 ? (params.currentCategory = currentCategory) : params;
+		if (Number(currentCategory) !== 0) {
+			params.currentCategory = currentCategory;
+		}
 
 		dispatch(fetchPizza(params));
 	}, [currentPage, typeFilter, currentCategory, searchText]);

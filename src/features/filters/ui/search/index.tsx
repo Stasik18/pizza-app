@@ -1,19 +1,19 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useRef, useState } from 'react';
-import { RootState } from '../../../../app/redux/store/store';
+import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { setSearch } from '../../../../app/redux/slices/searchSlice';
 import styles from './search.module.scss';
 
 const Search = () => {
-	const searchText = useSelector((state: RootState) => state.searchSlice.searchText);
+	const searchText = useAppSelector((state) => state.searchSlice.searchText);
+	const dispatch = useAppDispatch();
+
 	const [localSearchText, setLocalSearchText] = useState('');
-	const dispatch = useDispatch();
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const testDebounce = useCallback(
-		debounce((e) => {
+		debounce((e: string) => {
 			dispatch(setSearch(e));
 		}, 1000),
 		[],
@@ -37,7 +37,7 @@ const Search = () => {
 			<input
 				ref={inputRef}
 				value={localSearchText}
-				onChange={(e) => {
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					setLocalSearchText(e.target.value);
 					testDebounce(e.target.value);
 				}}

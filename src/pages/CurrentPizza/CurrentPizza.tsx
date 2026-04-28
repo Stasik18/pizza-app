@@ -2,31 +2,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../app/redux/hooks';
+
+import { addCart, selectCart } from '../../app/redux/slices/cartSlice';
+import { Pizza, PizzaInCart } from '../../entities/pizza/types/pizzaType';
 import styles from './currentPizza.module.scss';
-
-interface PizzaResponse {
-	id: number;
-	imageUrl: string;
-	title: string;
-	types: number[];
-	sizes: number[];
-	price: number;
-	category: number;
-	rating: number;
-}
-
-interface PizzaInCart {
-	imageUrl: string;
-	title: string;
-	type: string;
-	size: number;
-	price: number;
-	id: number;
-	uniqueCode: string;
-	count?: number;
-}
 
 const findCurrentPizza = (pizzas: PizzaInCart[], uniqueCode: string): PizzaInCart | null => {
 	return pizzas.find((e) => e.uniqueCode === uniqueCode) ?? null;
@@ -35,11 +15,11 @@ const findCurrentPizza = (pizzas: PizzaInCart[], uniqueCode: string): PizzaInCar
 const pizzaType: string[] = ['тонкое', 'стандартное'];
 
 const CurrentPizza = () => {
-	const { pizzasInCart } = useSelector(selectCart);
+	const { pizzasInCart } = useAppSelector(selectCart);
 	const { id } = useParams();
-	const [currentPizza, setCurrentPizza] = useState<PizzaResponse>();
+	const [currentPizza, setCurrentPizza] = useState<Pizza>();
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 
@@ -51,7 +31,7 @@ const CurrentPizza = () => {
 			try {
 				const response = await axios.get('https://6989c620c04d974bc6a05c40.mockapi.io/items/' + id);
 				setCurrentPizza(response.data);
-			} catch (error) {
+			} catch {
 				setError(true);
 			}
 		};
@@ -84,7 +64,7 @@ const CurrentPizza = () => {
 
 	const toCart = () => {
 		dispatch(
-			addCarts({
+			addCart({
 				imageUrl: currentPizza.imageUrl,
 				title: currentPizza.title,
 				type: pizzaType[activeType],

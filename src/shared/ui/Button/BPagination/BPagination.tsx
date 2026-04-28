@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../../../app/redux/hooks';
 
 import { setCurrentPage } from '../../../../app/redux/slices/filterSlice';
 import styles from './bpagination.module.scss';
@@ -14,7 +14,7 @@ const BPagination: React.FC<BPaginationProps> = ({ title }) => {
 
 	const currentPage = Number(searchParams.get('currentPage') ?? 1);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	return (
 		<>

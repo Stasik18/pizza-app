@@ -1,20 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface initialStateInterface {
+interface TypeFilter {
+	type: 'rating' | 'title' | 'price';
+	name: 'популярности' | 'цене' | 'алфавиту';
+}
+interface FilterState {
 	currentPage: number;
 	currentCategory: number;
-	typeFilter: {
-		type: string;
-		name: string;
-	};
+	typeFilter: TypeFilter;
 }
 
-interface forPayloadAction {
-	type: string;
-	name: string;
-}
-
-const initialState: initialStateInterface = {
+const initialState: FilterState = {
 	currentPage: 1,
 	currentCategory: 0,
 	typeFilter: {
@@ -27,15 +23,14 @@ const filterSlice = createSlice({
 	name: 'filter',
 	initialState,
 	reducers: {
-		setCategoryId(state, action: PayloadAction<number | string>) {
-			state.currentCategory = +action.payload;
+		setCategoryId(state, action: PayloadAction<number>) {
+			state.currentCategory = action.payload;
 		},
 
 		setCurrentPage(state, action: PayloadAction<number>) {
-			console.log(action.payload);
-			state.currentPage = +action.payload;
+			state.currentPage = action.payload;
 		},
-		setTypeFilter(state, action: PayloadAction<forPayloadAction>) {
+		setTypeFilter(state, action: PayloadAction<TypeFilter>) {
 			state.typeFilter = action.payload;
 		},
 	},

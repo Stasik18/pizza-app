@@ -1,30 +1,14 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { addCarts, selectCart } from '../../app/redux/slices/cartSlice';
+import { Link } from 'react-router-dom';
+import { addCart, selectCart } from '../../app/redux/slices/cartSlice';
+import { Pizza, PizzaInCart } from './types/pizzaType';
+
+import { useAppDispatch, useAppSelector } from '../../app/redux/hooks';
 
 import styles from './_pizza-block.module.scss';
 
-interface PizzaInCart {
-	imageUrl: string;
-	title: string;
-	type: string;
-	size: number;
-	price: number;
-	id: number;
-	uniqueCode: string;
-	count?: number;
-}
-
-interface PizzaCardProps {
-	id: number;
-	imageUrl: string;
-	title: string;
-	types: number[];
-	sizes: number[];
-	price: number;
-}
+type PizzaCardProps = Omit<Pizza, 'category' | 'rating'>;
 
 const findPizzaInCart = (itemsInCart: PizzaInCart[], uniqueCode: string) => {
 	return itemsInCart.find((e) => e.uniqueCode === uniqueCode);
@@ -32,8 +16,8 @@ const findPizzaInCart = (itemsInCart: PizzaInCart[], uniqueCode: string) => {
 const pizzaType: string[] = ['тонкое', 'стандартное'];
 
 const PizzaCard: React.FC<PizzaCardProps> = ({ id, imageUrl, title, types, sizes, price }) => {
-	const itemsInCart = useSelector(selectCart);
-	const dispatch = useDispatch();
+	const itemsInCart = useAppSelector(selectCart);
+	const dispatch = useAppDispatch();
 
 	const [activeType, setActiveType] = useState<number>(0);
 	const [activeSize, setActiveSize] = useState<number>(0);
@@ -49,9 +33,8 @@ const PizzaCard: React.FC<PizzaCardProps> = ({ id, imageUrl, title, types, sizes
 	}, [itemsInCart.pizzasInCart, memoUniqueCode]);
 
 	const toCart = () => {
-		console.log(2);
 		dispatch(
-			addCarts({
+			addCart({
 				imageUrl: imageUrl,
 				title: title,
 				type: pizzaType[activeType],

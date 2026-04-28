@@ -1,13 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../../app/redux/hooks';
 import { selectCart } from '../../../app/redux/slices/cartSlice';
 import Search from '../../../features/filters/ui/search';
-import { useSelector } from 'react-redux';
 import logoSvg from '../../../shared/assets/img/pizza-logo.svg';
 
 import styles from './_header.module.scss';
 
 const Header = () => {
-	const { totalPrice, totalCount } = useSelector(selectCart);
+	const { totalPrice, totalCount } = useAppSelector(selectCart);
 	const currentLocation = useLocation();
 
 	return (

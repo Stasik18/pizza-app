@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../app/redux/hooks';
 
 import { setCurrentPage } from '../../app/redux/slices/filterSlice';
 import BPagination from '../../shared/ui/Button/BPagination/BPagination';
@@ -14,7 +14,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const currentPage = Number(searchParams.get('currentPage') ?? 1);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const prevPage = () => {
 		if (currentPage >= 2) {
 			dispatch(setCurrentPage(currentPage - 1));
@@ -35,9 +35,9 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage }) => {
 		}
 	};
 
-	const newFunc = (page: number, totalPage: number) => {
-		let forJob = [];
-		let result = [];
+	const paginationLogic = (page: number, totalPage: number): (string | number)[] => {
+		let forJob = [] as number[];
+		let result = [] as (string | number)[];
 
 		if (totalPage < 5) {
 			for (let i = 0; i < totalPage; i++) {
@@ -89,7 +89,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPage }) => {
 					<path d="M13.906 21.637l0.742 0.742 6.378-6.379-6.378-6.379-0.742 0.742 5.112 5.112h-12.727v1.049h12.727z"></path>
 				</svg>
 			)}
-			{newFunc(currentPage, totalPage).map((elem, i) => {
+			{paginationLogic(currentPage, totalPage).map((elem, i) => {
 				return typeof elem === 'string' ? (
 					<span className={styles.dots} key={i}>
 						{elem}

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../app/redux/hooks';
 import { clearCart, selectCart } from '../../../app/redux/slices/cartSlice';
 
 import { Link } from 'react-router-dom';
@@ -8,8 +8,8 @@ import styles from './_cart.module.scss';
 import CartEmpty from './CartEmpty';
 
 const Cart = () => {
-	const dispatch = useDispatch();
-	const { pizzasInCart, totalPrice, totalCount } = useSelector(selectCart);
+	const dispatch = useAppDispatch();
+	const { pizzasInCart, totalPrice, totalCount } = useAppSelector(selectCart);
 
 	return (
 		<div className={styles['content']}>

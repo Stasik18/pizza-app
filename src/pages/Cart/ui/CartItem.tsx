@@ -1,25 +1,14 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../app/redux/hooks';
 import { changePizzaCount, removePizza } from '../../../app/redux/slices/cartSlice';
+import { PizzaInCart } from '../../../entities/pizza/types/pizzaType';
 import styles from './_cart.module.scss';
-
-interface PizzaInCart {
-	imageUrl: string;
-	title: string;
-	type: string;
-	size: number;
-	price: number;
-	id: number;
-	uniqueCode: string;
-	count?: number;
-}
 
 interface CartItemProp {
 	pizzaItemInCart: PizzaInCart;
 }
 
 const CartItem: React.FC<CartItemProp> = ({ pizzaItemInCart }) => {
-	console.log(pizzaItemInCart);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	return (
 		<div className={styles['cart__item']}>
